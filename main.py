@@ -18,14 +18,16 @@ with open("testing.bin", "rb") as file:
     while True:
         for a, a1, b, b1, c, c1, d, d1 in [vals[i:i + 8] for i in range(0, len(vals), 8)]:
             nums = to_shorts([a, a1, b, b1, c, c1, d, d1])
-            print(nums[0])
             match nums[0]:
                 case 0:
-                    gfxdraw.pixel(screen, nums[1], nums[2], (nums[3] & 0xf00, nums[3] & 0xf0, nums[3] & 0xf))
+                    r = nums[3] & 0xf00 >> 4
+                    g = (nums[3] & 0xf0)
+                    b = (nums[3] & 0xf) << 4
+
+                    gfxdraw.pixel(screen, nums[1], nums[2], (r, g, b))
                 case 1:
                     clock.tick()
                     pygame.display.flip()
-                    print("Display")
             for e in pygame.event.get():
                 if e.type == pygame.QUIT:
                     exit()
